@@ -9,21 +9,35 @@ import {
     setDestination,
     setOrigin,
 } from "../feature/navSlice";
+import NavFavourites from "../components/NavFavourites";
+import {Icon} from "react-native-elements";
+import {DrawerActions, useNavigation} from "@react-navigation/native";
 
 const HomeScreen = () => {
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
             <View style={tw`p-5`}>
-                <Image
-                    source={{ uri:'https://links.papareact.com/gzs'}}
-                    style={{
-                        width: 100,
-                        height: 100,
-                        resizeMode: 'contain',
-                    }}
-                />
+                <View style={{
+                    display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
+                }}>
+                    <Image
+                        source={{ uri:'https://links.papareact.com/gzs'}}
+                        style={{
+                            width: 100,
+                            height: 100,
+                            resizeMode: 'contain',
+                        }}
+                    />
+                    <Icon
+                        onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+                        name="menu-outline"
+                        type="ionicon"
+                        color="black"
+                        size={45} />
+                </View>
 
                 <GooglePlacesAutocomplete
                     styles={{
@@ -54,8 +68,8 @@ const HomeScreen = () => {
                     fetchDetails={true}
                     returnKey={"search"}
                 />
-
                 <NavOptions />
+                <NavFavourites />
             </View>
         </SafeAreaView>
     );

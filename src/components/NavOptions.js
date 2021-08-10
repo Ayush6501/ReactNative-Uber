@@ -33,10 +33,12 @@ const NavOptions = () => {
     const origin = useSelector(selectOrigin);
 
     return (
-        <SafeAreaView style={tw`bg-white h-full`}>
+        <SafeAreaView style={tw`bg-white`}>
             <View>
                 <FlatList
                     data={data}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
                     horizontal
                     keyExtractor={(item) => item.id}
                     renderItem={({item}) => (
