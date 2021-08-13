@@ -12,10 +12,16 @@ import {
 import NavFavourites from "../components/NavFavourites";
 import {Icon} from "react-native-elements";
 import {DrawerActions, useNavigation} from "@react-navigation/native";
+import {selectUserName, selectUserToken} from "../feature/userSlice";
+import NameModal from "../components/NameModal";
 
 const HomeScreen = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const username = useSelector(selectUserName);
+    const token = useSelector(selectUserToken);
+
+    console.log(username, token);
 
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
@@ -36,7 +42,8 @@ const HomeScreen = () => {
                         name="menu-outline"
                         type="ionicon"
                         color="black"
-                        size={45} />
+                        size={45}
+                    />
                 </View>
 
                 <GooglePlacesAutocomplete
@@ -70,6 +77,7 @@ const HomeScreen = () => {
                 />
                 <NavOptions />
                 <NavFavourites />
+                {(!username && token) && <NameModal/>}
             </View>
         </SafeAreaView>
     );

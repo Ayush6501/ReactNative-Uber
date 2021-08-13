@@ -69,8 +69,6 @@ const RideOptionCard = () => {
   const [selected, setSelected] = useState();
   const travelTimeInfo = useSelector(selectTravelTimeInfo);
 
-  console.log(travelTimeInfo?.duration?.value);
-
   const calculateDestTime = () => {
       Dt=new Date(new Date().getTime() + (+travelTimeInfo?.duration?.value * 1000));
       console.log(Dt.toLocaleTimeString('it-IT'));
@@ -98,7 +96,7 @@ const RideOptionCard = () => {
               renderItem={({item}) => {
                   const calculateDestTime = () => {
                       Dt=new Date(new Date().getTime() + (+travelTimeInfo?.duration?.value * item.timeMultiplier * 1000));
-                      console.log(Dt.toLocaleTimeString('it-IT'));
+                      //console.log(Dt.toLocaleTimeString('it-IT'));
                   }
                   calculateDestTime();
 

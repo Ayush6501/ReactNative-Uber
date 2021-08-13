@@ -6,12 +6,25 @@ import tw from "tailwind-react-native-classnames";
 import {Dimensions, Text, View} from "react-native";
 import NavOptions from "../components/NavOptions";
 import {Icon} from "react-native-elements";
+import {setSignOutState} from "../feature/userSlice";
+import {useDispatch} from "react-redux";
+import {DrawerActions, useNavigation} from "@react-navigation/native";
+import LoginScreen from "../screen/LoginScreen";
 
 const Drawer = createDrawerNavigator();
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 function CustomDrawerContent(props) {
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+
+    const logoutHandler = () => {
+        dispatch(setSignOutState());
+        navigation.navigate('LoginScreen');
+        navigation.dispatch(DrawerActions.closeDrawer())
+    }
+
     return (
         <DrawerContentScrollView {...props}>
             <View style={{ height: windowHeight}}>
@@ -54,7 +67,7 @@ function CustomDrawerContent(props) {
                         <Text style={tw`text-gray-500 text-sm mt-4 ml-5`}>Help</Text>
                         <Text style={tw`text-gray-500 text-sm mt-8 ml-5`}>Wallet</Text>
                         <Text style={tw`text-gray-500 text-sm mt-8 ml-5`}>Settings</Text>
-
+                        <Text onPress={logoutHandler} style={tw`text-gray-500 text-sm mt-8 ml-5`}>Logout</Text>
                     </View>
                     <View style={{position: "absolute", bottom: 5}}>
                         <View style={{ flexDirection: "row", width: 240, justifyContent: "space-between",
