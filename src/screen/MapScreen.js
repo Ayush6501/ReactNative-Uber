@@ -7,6 +7,8 @@ import NavigateCard from "../components/NavigateCard";
 import RideOptionCard from "../components/RideOptionCard";
 import {Icon} from "react-native-elements";
 import {useNavigation} from "@react-navigation/native";
+import DriverDetailCard from "../components/DriverDetailCard";
+import EndRideScreen from "./EndRideScreen";
 
 const MapScreen = () => {
     const Stack = createStackNavigator();
@@ -32,6 +34,16 @@ const MapScreen = () => {
                     <Stack.Screen
                         name="RideOptionCard"
                         component={RideOptionCard}
+                        options={{headerShown: false}}
+                    />
+                    <Stack.Screen
+                        name="DriverDetailCard"
+                        component={DriverDetailCard}
+                        options={{headerShown: false}}
+                    />
+                    <Stack.Screen
+                        name="EndRideScreen"
+                        component={EndRideScreen}
                         options={{headerShown: false}}
                     />
                 </Stack.Navigator>

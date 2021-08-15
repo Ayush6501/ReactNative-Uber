@@ -1,28 +1,31 @@
-import React from "react";
-import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer"
-import MainStackNavigation from "./MainStackNavigation";
+import React, {useState} from "react";
+import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import EatsScreen from "../screen/EatsScreen";
 import tw from "tailwind-react-native-classnames";
 import {Dimensions, Text, View} from "react-native";
-import NavOptions from "../components/NavOptions";
 import {Icon} from "react-native-elements";
-import {setSignOutState} from "../feature/userSlice";
-import {useDispatch} from "react-redux";
+import {setSignOutState, selectUserName} from "../feature/userSlice";
+import {useDispatch, useSelector} from "react-redux";
 import {DrawerActions, useNavigation} from "@react-navigation/native";
 import LoginScreen from "../screen/LoginScreen";
+import AppStackNavigation from "./AppStackNavigation";
+import {auth} from "../components/firebase";
 
 const Drawer = createDrawerNavigator();
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 function CustomDrawerContent(props) {
+    const name = useSelector(selectUserName);
+
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
     const logoutHandler = () => {
         dispatch(setSignOutState());
-        navigation.navigate('LoginScreen');
+        auth.signOut();
         navigation.dispatch(DrawerActions.closeDrawer())
+        navigation.navigate("LoginScreen");
     }
 
     return (
@@ -42,7 +45,7 @@ function CustomDrawerContent(props) {
                     }}>
                         <Icon name="person-circle-outline" type="ionicon" color="white" size={70}/>
                         <View>
-                            <Text style={tw`text-white text-xl`}>Ayush Majumdar</Text>
+                            <Text style={tw`text-white text-xl`}>{name ? name: "User"}</Text>
                             <Text style={{color: "gray"}}>4.78 Stars</Text>
                         </View>
                     </View>
@@ -72,8 +75,8 @@ function CustomDrawerContent(props) {
                     <View style={{position: "absolute", bottom: 5}}>
                         <View style={{ flexDirection: "row", width: 240, justifyContent: "space-between",
                             alignItems: "center", marginLeft: 25}}>
-                            <Text>Made By Ayush Majumdar</Text>
-                            <Text>v1.1</Text>
+                            <Text style={tw`mb-2`}>Made By Ayush Majumdar</Text>
+                            <Text style={tw`mb-2`}>v1.1</Text>
                         </View>
                     </View>
                 </View>
@@ -83,6 +86,7 @@ function CustomDrawerContent(props) {
 }
 
 const DrawerNavigator = () => {
+
     return (
         <Drawer.Navigator
             drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -97,12 +101,18 @@ const DrawerNavigator = () => {
             }}
             initialRouteName="Home">
             <Drawer.Screen
-                name="Home"
-                component={MainStackNavigation}
+                name='Home'
+                component={AppStackNavigation}
                 options={{
                     headerShown: false, drawerActiveBackgroundColor: "white", drawerActiveTintColor: "black",
-                }}/>
-            <Drawer.Screen name="Eats" component={EatsScreen} />
+                }}
+            />
+            <Drawer.Screen
+                name="Eats"
+                options={{
+                    headerShown: false, drawerActiveBackgroundColor: "white", drawerActiveTintColor: "black",
+                }}
+                component={EatsScreen} />
         </Drawer.Navigator>
     );
 }

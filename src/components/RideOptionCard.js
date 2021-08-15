@@ -138,9 +138,10 @@ const RideOptionCard = () => {
           />
           <View>
               <TouchableOpacity
+                  onPress={() => navigation.navigate("DriverDetailCard", {selected: selected})}
                   disabled={!selected}
                   style={tw`bg-black py-3 m-3 z-50 ${!selected && "bg-gray-300"}`}>
-                  <Text style={tw`text-center text-white text-xl`}>
+                  <Text style={tw`text-center text-white text-xl`} >
                       Confirm {selected?.title}
                   </Text>
               </TouchableOpacity>

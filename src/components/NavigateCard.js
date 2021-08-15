@@ -4,19 +4,22 @@ import tw from "tailwind-react-native-classnames";
 import {setDestination, setOrigin} from "../feature/navSlice";
 import {GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
 import {GOOGLE_MAPS_APIKEY} from "@env";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectDestination} from "../feature/navSlice";
 import {useNavigation} from "@react-navigation/native";
 import NavFavourites from "./NavFavourites";
 import {Icon} from "react-native-elements";
+import {selectUserName} from "../feature/userSlice";
 
 const NavigateCard = () => {
+    const name = useSelector(selectUserName);
+
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
   return (
       <SafeAreaView style={tw`bg-white flex-1`}>
-        <Text style={tw`text-center py-5 text-xl`}>Good Morning, Ayush</Text>
+        <Text style={tw`text-center py-5 text-xl`}>Good Morning, {name ? name : "User"}</Text>
           <View style={tw`border-t border-gray-200 flex-shrink`}>
               <GooglePlacesAutocomplete
                   styles={toInputBoxStyles}
@@ -53,6 +56,7 @@ const NavigateCard = () => {
                   <Text style={tw`text-white text-center`}>Rides</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                  onPress={() => navigation.navigate('Eats')}
                   style={tw`flex flex-row justify-between w-24 px-4 py-3 rounded-full`}>
                   <Icon name='fast-food-outline' type="ionicon" color="black" size={16} />
                   <Text style={tw`text-black text-center`}>Eats</Text>

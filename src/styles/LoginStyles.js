@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         position: "relative",
-        bottom: 70,
+        bottom: 90,
         backgroundColor: "#000000b0"
     },
     inputBox: {

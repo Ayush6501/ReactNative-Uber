@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, Button, Text, StyleSheet, ImageBackground, Image, TextInput, TouchableOpacity} from "react-native";
+import {View, Text, ImageBackground, Image, TextInput, TouchableOpacity} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import {Icon} from "react-native-elements";
 import {useNavigation} from "@react-navigation/native";
@@ -7,7 +7,7 @@ import styles from "../styles/LoginStyles"
 import useInput from "../hooks/useInput";
 import {auth} from "../components/firebase";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUserEmail, selectUserToken, setUserLoginDetails} from "../feature/userSlice";
+import {selectUserEmail, setSignOutState, selectUserToken, setUserLoginDetails} from "../feature/userSlice";
 
 
 const LoginScreen = () => {
@@ -39,7 +39,7 @@ const LoginScreen = () => {
         reset: resetNameHandler,
     } = useInput(value => value.trim() !== "" && value.length > 6);
 
-    const loginToggleHandler = (prevState) => {
+    const loginToggleHandler = () => {
         setIsLogin(!isLogin);
     }
 
@@ -50,8 +50,6 @@ const LoginScreen = () => {
                 token: user.uid,
             })
         );
-        // console.log("token", token);
-        // console.log("email", user.email);
     };
 
     const submitHandler = () => {
@@ -72,7 +70,7 @@ const LoginScreen = () => {
         } else {
             auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword)
                 .then((userCredential) => {
-                    console.log(userCredential);
+                    //console.log(userCredential);
                     console.ignoredYellowBox = [
                         'Setting a timer'
                     ]
@@ -83,18 +81,15 @@ const LoginScreen = () => {
                 });
         }
     }
-    //
-    // useEffect(() => {
-    //     auth.onAuthStateChanged(async (user) => {
-    //         if(user) {
-    //             setUser(user);
-    //             navigation.navigate('HomeScreen');
-    //         }
-    //     });
-    // }, [email])
 
-    // console.log("Email", emailIsValid);
-    // console.log("Password", passwordIsValid);
+    useEffect(() => {
+        auth.onAuthStateChanged(async (user) => {
+            if(user) {
+                setUser(user);
+                navigation.navigate('Main', { screen: 'Home' });
+            }
+        });
+    }, [email])
 
     useEffect(() => {
         if (emailIsValid && passwordIsValid) {
@@ -105,6 +100,10 @@ const LoginScreen = () => {
         console.log("Form", formIsValid);
     }, [emailIsValid, passwordIsValid]);
 
+    if (emailInputHasError || passwordHasError) {
+        setErrorMessage("Invalid Email or password");
+    }
+
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../../assets/images/login-bg.jpg')} resizeMode="cover" style={styles.image}>
@@ -113,7 +112,6 @@ const LoginScreen = () => {
                 </View>
                 <View style={styles.inputBox}>
                     <Text style={tw`text-white text-4xl font-semibold mt-2`}>{isLogin ? "Login" : "SignUp"}</Text>
-                    <Text style={tw`text-white text-sm`}>{(emailInputHasError || passwordHasError) ? "Invalid Email or password" : null}</Text>
                     <Text style={tw`text-white text-sm`}>{errorMessage && errorMessage}</Text>
                     <TextInput
                         type="text"

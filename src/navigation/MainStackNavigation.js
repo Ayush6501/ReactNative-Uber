@@ -1,34 +1,26 @@
 import React from "react";
 import {createStackNavigator} from "@react-navigation/stack";
-import HomeScreen from "../screen/Homescreen";
-import MapScreen from "../screen/MapScreen";
 import LoginScreen from "../screen/LoginScreen";
-import {useSelector} from "react-redux";
+import DrawerNavigation from "./DrawerNavigation";
 import {selectUserToken} from "../feature/userSlice";
+import {useSelector} from "react-redux";
 
 const MainStackNavigator = () => {
     const Stack = createStackNavigator();
-    const token = useSelector(selectUserToken);
+    // const token = useSelector(selectUserToken);
 
     return (
         <Stack.Navigator initialRouteName='LoginScreen'>
-            {token === null ? <Stack.Screen
+            <Stack.Screen
                 name='LoginScreen'
                 component={LoginScreen}
                 options={{
                     headerShown: false
                 }}
-            /> : (
+            />
             <Stack.Screen
-                name='HomeScreen'
-                component={HomeScreen}
-                options={{
-                    headerShown: false
-                }}
-            />)}
-             <Stack.Screen
-                name='MapScreen'
-                component={MapScreen}
+                name='Main'
+                component={DrawerNavigation}
                 options={{
                     headerShown: false
                 }}
