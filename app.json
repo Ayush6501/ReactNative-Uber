@@ -27,7 +27,7 @@
       "package": "app.uber.app",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyC4SuCSlw_DoGa49rrSK3ji6sc8wv8K8N0"
+          "apiKey": "GOOGLE_MAPS_API_KEY
         }
       }
     },
